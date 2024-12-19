@@ -1,6 +1,8 @@
 package com.fkbinhoo.CrudClients.dto;
 
 
+import com.fkbinhoo.CrudClients.entities.Client;
+
 import java.time.LocalDate;
 
 public class ClientDTO {
@@ -23,6 +25,16 @@ public class ClientDTO {
         this.birthDate = birthDate;
         this.children = children;
     }
+
+    public ClientDTO(Client entity) {
+        id = entity.getId();
+        name = entity.getName();
+        cpf = entity.getCpf();
+        income = entity.getIncome();
+        birthDate = entity.getBirthDate();
+        children = entity.getChildren();
+    }
+
 
     public Long getId() {
         return id;
