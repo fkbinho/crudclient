@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 public class ClientService {
 
@@ -33,15 +31,26 @@ public class ClientService {
     @Transactional
     public ClientDTO insert(ClientDTO clientDTO) {
         Client client = new Client();
+        CopyDtoToEntity(clientDTO, client);
+        client = clientRepository.save(client);
 
+        return new ClientDTO(client);
+    }
+
+    @Transactional
+    public ClientDTO update (Long id, ClientDTO clientDTO) {
+        Client client = clientRepository.getReferenceById(id);
+        CopyDtoToEntity(clientDTO, client);
+        client = clientRepository.save(client);
+
+        return new ClientDTO(client);
+    }
+
+    private void CopyDtoToEntity(ClientDTO clientDTO, Client client) {
         client.setName(clientDTO.getName());
         client.setCpf(clientDTO.getCpf());
         client.setIncome(clientDTO.getIncome());
         client.setBirthDate(clientDTO.getBirthDate());
-        client.setChildren(client.getChildren());
-
-        client = clientRepository.save(client);
-
-        return new ClientDTO(client);
+        client.setChildren(clientDTO.getChildren());
     }
 }
