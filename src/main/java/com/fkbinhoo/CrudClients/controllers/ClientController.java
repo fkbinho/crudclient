@@ -8,6 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/clients")
@@ -31,7 +34,9 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<ClientDTO> insert (@RequestBody ClientDTO clientDTO) {
         clientDTO= clientService.insert(clientDTO);
-        return ResponseEntity.ok(clientDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(clientDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(clientDTO);
     }
 
     @PutMapping(value = "/{id}")
